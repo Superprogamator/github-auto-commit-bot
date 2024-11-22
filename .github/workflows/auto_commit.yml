@@ -1,11 +1,7 @@
 name: Auto Commit
 
 on:
-  schedule:
-    - cron: "0 0 * * *" # Runs at midnight every day
-  push:
-    branches:
-      - main
+  workflow_dispatch: # Permite rodar manualmente
 
 jobs:
   build:
@@ -23,10 +19,16 @@ jobs:
       - name: Install Git
         run: sudo apt-get install git
 
-      - name: Run auto commit script
+      - name: Generate 120 commits
         run: |
-          git config --global user.name 'Jethro Au'
-          git config --global user.email 'galongau@gmail.com'
-          python auto_commit.py
+          git config --global user.name 'superprogramator'
+          git config --global user.email 'enzosribeiro10br@gmail.com'
+          for i in {1..120}
+          do
+            echo "Mudança número $i" >> file.txt
+            git add file.txt
+            git commit -m "Commit automático $i"
+          done
+          git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
